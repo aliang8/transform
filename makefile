@@ -2,7 +2,6 @@ run: main.py display.py draw.py matrix.py parser.py
 	python main.py
 
 clean:
+	rm pic.png
 	rm *.pyc
 	rm *~
-	rm *.ppm
-	rm image

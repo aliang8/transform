@@ -1,30 +1,37 @@
 import math
 
-def make_translate( x, y, z ):
-    t = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[x,y,z,1]]
-    return t
-            
-def make_scale( x, y, z ):
-    t = [[x,0,0,0],[0,2,0,0],[0,0,3,0],[0,0,0,1]]
-    return t
+def transpose(old):
+    new = new_matrix()
+    for r in range(4):
+        for c in range(4):
+            new[r][c] = old[c][r];
+    return new;
 
-def make_rotX( theta ):    
-    cos = math.cos(math.radians(theta))
-    sin = math.sin(math.radians(theta))
-    t =[[1,0,0,0],[0,cos,sin,0],[0,-sin,cos,0],[0,0,0,1]]
-    return t
+def make_translate( x, y, z ):
+    trans = [[1, 0, 0, x], [0, 1, 0, y], [0, 0, 1, z], [0, 0, 0, 1]]
+    return transpose(trans);
+
+def make_scale( x, y, z ):
+    scale = [[x, 0, 0, 0], [0, y, 0, 0], [0, 0, z, 0], [0, 0, 0, 1]]
+    return transpose(scale);
+
+def make_rotX( theta ):
+    sin = math.sin(math.radians(theta));
+    cos = math.cos(math.radians(theta));
+    rot = [[1.0, 0.0, 0.0, 0.0], [0.0, cos, -sin, 0.0], [0.0, sin, cos, 0.0], [0.0, 0.0, 0.0, 1.0]]
+    return transpose(rot);
 
 def make_rotY( theta ):
-    cos = math.cos(math.radians(theta))
-    sin = math.sin(math.radians(theta))
-    t= [[cos,0,-sin,0],[0,1,0,0],[sin,0,cos,0],[0,0,0,1]]
-    return t
+    sin = math.sin(math.radians(theta));
+    cos = math.cos(math.radians(theta));
+    rot = [[cos, 0.0, sin, 0.0, 0.], [0., 1., 0., 0.], [-sin, 0., cos, 0.], [0., 0., 0., 1.]]
+    return transpose(rot);
 
 def make_rotZ( theta ):
-    cos = math.cos(math.radians(theta))
-    sin = math.sin(math.radians(theta))
-    t = [[cos,sin,0,0],[-sin,cos,0,0],[0,0,1,0],[0,0,0,1]]
-    return t
+    sin = math.sin(-math.radians(theta));
+    cos = math.cos(-math.radians(theta));
+    rot = [[cos, -sin, 0.0, 0.0], [sin, cos, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0], [0.0, 0., 0., 1.]];
+    return rot;
 
 def print_matrix( matrix ):
     s = ''

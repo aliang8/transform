@@ -7,7 +7,6 @@ screen = new_screen()
 color = [ 0, 255, 0 ]
 edges = []
 transform = new_matrix()
-ident(transform)
 
 print('Original matrix: \n')
 print_matrix(transform)

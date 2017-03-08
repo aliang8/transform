@@ -1,6 +1,7 @@
 from display import *
 from matrix import *
 from draw import *
+import time
 
 """
 Goes through the file named filename and performs all of the actions listed in that file.
@@ -40,38 +41,38 @@ See the file script for an example of the file format
 def parse_file( fname, edges, transform, screen, color ):
     f = open(fname, 'r')
     tr = transform
-    commands = ['line','scale','translate','rotate']
+    commands = ['line','scale','move','rotate']
     lines =  f.read().splitlines()
     for i in range(len(lines)):
         line = lines[i]
         if line in commands:
             i = lines[i+1].split(" ")
         if line == 'line':
-            add_edge(edges,int(i[0]),int(i[1]),int(i[2]),int(i[3]),int(i[4]),int(i[5]))
+            add_edge(edges,float(i[0]),float(i[1]),float(i[2]),float(i[3]),float(i[4]),float(i[5]))
         elif line == 'ident':
             ident(tr)
         elif line == 'scale':
-            s = make_scale(int(i[0]),int(i[1]),int(i[2]))
+            s = make_scale(float(i[0]),float(i[1]),float(i[2]))
             matrix_mult(s,tr)
-        elif line == 'translate':
-            t = make_translate(int(i[0]),int(i[1]),int(i[2]))
+        elif line == 'move':
+            t = make_translate(float(i[0]),float(i[1]),float(i[2]))
             matrix_mult(t,tr)
         elif line == 'rotate':
             if i[0] == 'x':
-                rX = make_rotX(int(i[1]))
-                matrix_mult(rX, tr)
+                rot = make_rotX(float(i[1]))
             elif i[0] == 'y':
-                rY = make_rotY(int(i[1]))
-                matrix_mult(rY, tr)
+                rot = make_rotY(float(i[1]))
             else:
-                rZ = make_rotZ(int(i[1]))
-                matrix_mult(rZ, tr)
+                rot = make_rotZ(float(i[1]))
+            matrix_mult(rot, tr)
             #tr = normalize(tr)
         elif line == 'apply':
             matrix_mult(transform,edges)
         elif line == 'display':
+            clear_screen(screen)
             draw_lines( edges, screen, color )
             display(screen)
+            time.sleep(0.2)
         elif line == 'save':
             fname = lines[i+1]
             draw_lines( edges, screen, color )
